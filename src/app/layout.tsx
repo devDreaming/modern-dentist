@@ -36,7 +36,7 @@ export default function RootLayout({
         className={`${loveLight.variable} ${montaguSlab.variable} ${montserrat.variable} antialiased`}
       >
         <Nav />
-        <main className="px-6 py-12">{children}</main>
+        <main className="px-6 pt-12">{children}</main>
         <Footer />
       </body>
     </html>
