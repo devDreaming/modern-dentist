@@ -7,7 +7,7 @@ import AnimatedButton from "@/components/AnimatedButton";
 export default function Home() {
   return (
     <div className="flex flex-col">
-      <section className="relative -mx-6 -mt-12 w-[calc(100%+3rem)] h-[calc(100vh-60px)]">
+      <section className="relative -mx-6 -mt-12 w-[calc(100%+3rem)] h-[calc(100vh)]">
         <Image
           src="/hero-img.png"
           alt="Modern dental care"
@@ -28,7 +28,7 @@ export default function Home() {
               A confident smile can change your life—<br/>let us help you achieve it with expert dental care.
             </p>
             <div className="mt-6">
-              <AnimatedButton href="#">Schedule Your Appointment Today</AnimatedButton>
+              <AnimatedButton bookAppointment>Schedule Your Appointment Today</AnimatedButton>
             </div>
           </div>
         </div>
@@ -102,7 +102,7 @@ export default function Home() {
           <p className="text-black font-bold italic mb-10 max-w-3xl mx-auto">
             Providing Compassionate Dental Care for Every Generation. Your family&apos;s oral health is our priority. We offer expert dental services tailored to bring you confident, healthy smiles.
           </p>
-          <AnimatedButton href="#">Book your appointment today and experience exceptional care!</AnimatedButton>
+          <AnimatedButton bookAppointment>Book your appointment today and experience exceptional care!</AnimatedButton>
         </div>
       </section>
     </div>

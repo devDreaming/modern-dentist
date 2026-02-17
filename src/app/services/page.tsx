@@ -1,13 +1,10 @@
-export default function Projects() {
+export default function Services() {
   return (
     <div className="flex flex-col gap-8">
-      <h1 className="text-4xl font-bold tracking-tight">Projects</h1>
+      <h1 className="text-4xl font-bold tracking-tight">Services</h1>
       <p className="text-lg text-zinc-600 dark:text-zinc-400">
-        A showcase of my work and side projects.
+        This is the services page
       </p>
-      <div className="grid gap-6 sm:grid-cols-2">
-        {/* Add project cards here */}
-      </div>
     </div>
   );
 }

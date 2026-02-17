@@ -3,6 +3,7 @@ import { Love_Light, Montagu_Slab, Montserrat } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import { AppointmentProvider } from "@/context/AppointmentContext";
 
 const loveLight = Love_Light({
   variable: "--font-love-light",
@@ -33,11 +34,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${loveLight.variable} ${montaguSlab.variable} ${montserrat.variable} antialiased`}
+        className={`${loveLight.variable} ${montaguSlab.variable} ${montserrat.variable} antialiased min-h-screen flex flex-col`}
       >
-        <Nav />
-        <main className="px-6 pt-12">{children}</main>
-        <Footer />
+        <AppointmentProvider>
+          <Nav />
+          <main className="px-6 grow">{children}</main>
+          <Footer />
+        </AppointmentProvider>
       </body>
     </html>
   );
