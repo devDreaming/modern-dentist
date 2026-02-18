@@ -7,20 +7,35 @@ interface AnimatedButtonProps {
   href?: string;
   onClick?: () => void;
   bookAppointment?: boolean;
+  variant?: "default" | "dark";
   children: string;
 }
 
-export default function AnimatedButton({ href, onClick, bookAppointment, children }: AnimatedButtonProps) {
+export default function AnimatedButton({ href, onClick, bookAppointment, variant = "default", children }: AnimatedButtonProps) {
   const { openModal } = useAppointment();
 
-  const className = "group inline-flex items-center gap-2 rounded-full px-6 py-3 font-medium transition-all duration-500 ease-out bg-size-[200%_100%] bg-position-[100%_0] hover:bg-position-[0_0] cursor-pointer";
-  const style = {
-    backgroundImage: "linear-gradient(to right, #0D6D6E 50%, white 50%)",
+  const baseClassName = "group inline-flex items-center gap-2 rounded-full px-6 py-3 font-medium transition-all duration-500 ease-out bg-size-[200%_100%] bg-position-[100%_0] hover:bg-position-[0_0] cursor-pointer";
+
+  const variantStyles = {
+    default: {
+      className: baseClassName,
+      style: { backgroundImage: "linear-gradient(to right, #0D6D6E 50%, white 50%)" },
+      textClass: "text-black transition-colors duration-500 group-hover:text-white",
+      iconClass: "size-4 text-black transition-colors duration-500 group-hover:text-white",
+    },
+    dark: {
+      className: `${baseClassName} border border-white hover:border-[#0D6D6E]`,
+      style: { backgroundImage: "linear-gradient(to right, #0D6D6E 50%, black 50%)" },
+      textClass: "text-white transition-colors duration-500",
+      iconClass: "size-4 text-white transition-colors duration-500",
+    },
   };
+
+  const { className, style, textClass, iconClass } = variantStyles[variant];
 
   const content = (
     <>
-      <span className="text-black transition-colors duration-500 group-hover:text-white">
+      <span className={textClass}>
         {children}
       </span>
       <svg
@@ -29,7 +44,7 @@ export default function AnimatedButton({ href, onClick, bookAppointment, childre
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="size-4 text-black transition-colors duration-500 group-hover:text-white"
+        className={iconClass}
       >
         <path
           strokeLinecap="round"
@@ -40,7 +55,12 @@ export default function AnimatedButton({ href, onClick, bookAppointment, childre
     </>
   );
 
-  const handleClick = bookAppointment ? openModal : onClick;
+  const handleClick = bookAppointment
+    ? () => {
+        onClick?.();
+        openModal();
+      }
+    : onClick;
 
   if (handleClick) {
     return (

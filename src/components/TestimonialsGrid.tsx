@@ -7,31 +7,26 @@ const testimonials = [
     quote: "Absolutely amazing service! The staff is super friendly, and the atmosphere is very welcoming. I felt completely at ease throughout my visit. Highly recommended!",
     name: "James Anderson",
     location: "Jakarta",
-    avatarGradient: "from-gray-400 to-gray-500",
   },
   {
     quote: "Best dental experience ever! Everything was explained clearly, and my concerns were addressed. I couldn't be happier with the results!",
     name: "Michael Brown",
     location: "Jakarta",
-    avatarGradient: "from-gray-400 to-gray-500",
   },
   {
     quote: "A fantastic clinic! The process was smooth, pain-free, and very efficient. I'm excited for my next visit already!",
     name: "David Wilson",
     location: "Jakarta",
-    avatarGradient: "from-orange-400 to-orange-600",
   },
   {
     quote: "The team here truly cares about their patients. Professional, gentle, and always on time. I wouldn't go anywhere else!",
     name: "Sarah Johnson",
     location: "Jakarta",
-    avatarGradient: "from-pink-400 to-pink-600",
   },
   {
     quote: "From the moment I walked in, I felt welcomed. The treatment was painless and the results exceeded my expectations!",
     name: "Robert Chen",
     location: "Jakarta",
-    avatarGradient: "from-blue-400 to-blue-600",
   },
 ];
 
@@ -66,12 +61,12 @@ export default function TestimonialsGrid({ onPrev, onNext }: TestimonialsGridPro
   }, [maxIndex, currentIndex]);
 
   const handlePrev = () => {
-    setCurrentIndex((prev) => Math.max(0, prev - 1));
+    setCurrentIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
     onPrev?.();
   };
 
   const handleNext = () => {
-    setCurrentIndex((prev) => Math.min(maxIndex, prev + 1));
+    setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
     onNext?.();
   };
 
@@ -90,10 +85,10 @@ export default function TestimonialsGrid({ onPrev, onNext }: TestimonialsGridPro
     const isLeftSwipe = distance > minSwipeDistance;
     const isRightSwipe = distance < -minSwipeDistance;
 
-    if (isLeftSwipe && currentIndex < maxIndex) {
+    if (isLeftSwipe) {
       handleNext();
     }
-    if (isRightSwipe && currentIndex > 0) {
+    if (isRightSwipe) {
       handlePrev();
     }
   };
@@ -113,12 +108,11 @@ export default function TestimonialsGrid({ onPrev, onNext }: TestimonialsGridPro
         {/* Left Arrow - hidden on mobile */}
         <button
           onClick={handlePrev}
-          disabled={currentIndex === 0}
-          className={`w-10 h-10 rounded-full border-2 border-black hidden md:flex items-center justify-center bg-white hover:bg-gray-100 shrink-0 ${
-            currentIndex === 0 ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+          className="hidden md:flex items-center justify-center shrink-0 text-gray-600 hover:text-[#0D6D6E] transition-colors cursor-pointer"
         >
-          <span>←</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+          </svg>
         </button>
 
         {/* Carousel Container */}
@@ -139,12 +133,9 @@ export default function TestimonialsGrid({ onPrev, onNext }: TestimonialsGridPro
                 key={index}
                 className="bg-[#B8E8E8] rounded-2xl p-6 flex flex-col items-center text-center shrink-0 w-full md:w-[calc(33.333%-1rem)]"
               >
-                <p className="font-bold italic text-sm mb-6">
+                <p className="italic text-sm mb-6">
                   &quot;{testimonial.quote}&quot;
                 </p>
-                <div className="w-20 h-20 rounded-full bg-gray-300 overflow-hidden mb-3">
-                  <div className={`w-full h-full bg-gradient-to-br ${testimonial.avatarGradient}`} />
-                </div>
                 <p className="font-bold">{testimonial.name}</p>
                 <p className="text-sm">{testimonial.location}</p>
               </div>
@@ -155,12 +146,11 @@ export default function TestimonialsGrid({ onPrev, onNext }: TestimonialsGridPro
         {/* Right Arrow - hidden on mobile */}
         <button
           onClick={handleNext}
-          disabled={currentIndex >= maxIndex}
-          className={`w-10 h-10 rounded-full border-2 border-black hidden md:flex items-center justify-center bg-white hover:bg-gray-100 shrink-0 ${
-            currentIndex >= maxIndex ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+          className="hidden md:flex items-center justify-center shrink-0 text-gray-600 hover:text-[#0D6D6E] transition-colors cursor-pointer"
         >
-          <span>→</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8">
+            <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
         </button>
       </div>
 
