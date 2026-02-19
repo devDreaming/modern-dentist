@@ -1,10 +1,12 @@
+import SubPageHero from "@/components/SubPageHero";
+
 export default function Tips() {
   return (
-    <div className="flex flex-col gap-8">
-      <h1 className="text-4xl font-bold tracking-tight">Dental Health Tips</h1>
-      <p className="text-lg text-zinc-600 dark:text-zinc-400">
-        This is the tips page
-      </p>
+    <div className="flex flex-col">
+      <SubPageHero
+        title="Dental Health"
+        subtitle="Achieve a brighter, healthier smile with expert tips and advice. Explore daily dental routines, diet tips, and solutions to common dental issues for you and your family."
+      />
     </div>
   );
 }

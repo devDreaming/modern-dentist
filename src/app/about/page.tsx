@@ -1,10 +1,14 @@
+import SubPageHero from "@/components/SubPageHero";
+import TeamSection from "@/components/TeamSection";
+
 export default function About() {
   return (
-    <div className="flex flex-col gap-8">
-      <h1 className="text-4xl font-bold tracking-tight">About Us</h1>
-      <p className="text-lg text-zinc-600 dark:text-zinc-400">
-        This is the about us page
-      </p>
+    <div className="flex flex-col">
+      <SubPageHero
+        title="About Us"
+        subtitle="Providing top-quality dental care with a gentle touch."
+      />
+      <TeamSection />
     </div>
   );
 }

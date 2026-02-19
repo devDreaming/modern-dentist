@@ -1,10 +1,12 @@
+import SubPageHero from "@/components/SubPageHero";
+
 export default function Services() {
   return (
-    <div className="flex flex-col gap-8">
-      <h1 className="text-4xl font-bold tracking-tight">Services</h1>
-      <p className="text-lg text-zinc-600 dark:text-zinc-400">
-        This is the services page
-      </p>
+    <div className="flex flex-col">
+      <SubPageHero
+        title="Our Services"
+        subtitle="We offer a range of advanced dental treatments to keep your smile healthy, bright, and confident. From routine checkups to specialized procedures, our expert team is here to provide the best care for you and your family."
+      />
     </div>
   );
 }
