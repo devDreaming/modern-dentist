@@ -36,7 +36,7 @@ function FlipCard({ member }: FlipCardProps) {
 
   return (
     <div
-      className="group h-96 w-full cursor-pointer perspective-1000"
+      className="group h-80 w-full cursor-pointer perspective-1000"
       onClick={() => setIsFlipped(!isFlipped)}
     >
       <div
@@ -93,7 +93,7 @@ function FlipCard({ member }: FlipCardProps) {
 
 export default function TeamSection() {
   return (
-    <section className="py-16">
+    <section className="py-16 px-6">
       <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
         Meet Our <span className="text-[#0D6D6E]">Experts</span>
       </h2>

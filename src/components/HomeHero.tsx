@@ -3,7 +3,7 @@ import AnimatedButton from "@/components/AnimatedButton";
 
 export default function HomeHero() {
   return (
-    <section className="relative -mx-6 -mt-12 w-[calc(100%+3rem)] h-[calc(100vh)]">
+    <section className="relative -mt-12 h-[calc(100vh)]">
       <Image
         src="/hero-img.png"
         alt="Modern dental care"
@@ -17,7 +17,7 @@ export default function HomeHero() {
           background: "linear-gradient(to right, #12FFE9, rgba(93, 128, 115, 0))",
         }}
       />
-      <div className="absolute inset-0 flex items-center">
+      <div className="absolute inset-0 flex items-center px-6">
         <div className="px-6 md:px-12">
           <h1 className="text-4xl md:text-[64px] font-bold text-black leading-[1.3]">Brighter <span className="text-white">Smiles,<br/>Healthier</span> Lives</h1>
           <p className="mt-4 text-md font-bold font-italic">

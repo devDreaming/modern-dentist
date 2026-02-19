@@ -59,8 +59,8 @@ export default function WhyChooseUs() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative -mx-6 w-[calc(100%+3rem)] py-16">
-      <div className="mx-auto max-w-5xl px-6">
+    <section ref={sectionRef} className="relative py-16 px-6">
+      <div className="mx-auto max-w-5xl">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
           Why <span className="text-[#0D6D6E]">Choose Us?</span>
         </h2>

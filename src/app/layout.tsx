@@ -38,7 +38,7 @@ export default function RootLayout({
       >
         <AppointmentProvider>
           <Nav />
-          <main className="px-6 grow overflow-visible">{children}</main>
+          <main className="grow overflow-visible">{children}</main>
           <Footer />
         </AppointmentProvider>
       </body>

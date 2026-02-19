@@ -30,12 +30,7 @@ const testimonials = [
   },
 ];
 
-interface TestimonialsGridProps {
-  onPrev?: () => void;
-  onNext?: () => void;
-}
-
-export default function TestimonialsGrid({ onPrev, onNext }: TestimonialsGridProps) {
+export default function TestimonialsGrid() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -62,12 +57,10 @@ export default function TestimonialsGrid({ onPrev, onNext }: TestimonialsGridPro
 
   const handlePrev = () => {
     setCurrentIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
-    onPrev?.();
   };
 
   const handleNext = () => {
     setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
-    onNext?.();
   };
 
   const onTouchStart = (e: React.TouchEvent) => {
@@ -102,9 +95,14 @@ export default function TestimonialsGrid({ onPrev, onNext }: TestimonialsGridPro
   };
 
   return (
-    <div>
-      {/* Carousel with arrows */}
-      <div className="flex items-center gap-4">
+    <section className="relative py-16 bg-white px-6">
+      <div className="mx-auto max-w-6xl">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+          What Our <span className="text-[#0D6D6E]">Happy Patients</span> Say
+        </h2>
+
+        {/* Carousel with arrows */}
+        <div className="flex items-center gap-4">
         {/* Left Arrow - hidden on mobile */}
         <button
           onClick={handlePrev}
@@ -154,18 +152,19 @@ export default function TestimonialsGrid({ onPrev, onNext }: TestimonialsGridPro
         </button>
       </div>
 
-      {/* Dots indicator */}
-      <div className="flex justify-center gap-2 mt-6">
-        {Array.from({ length: maxIndex + 1 }).map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentIndex(index)}
-            className={`w-2 h-2 rounded-full transition-colors ${
-              currentIndex === index ? "bg-[#0D6D6E]" : "bg-gray-300"
-            }`}
-          />
-        ))}
+        {/* Dots indicator */}
+        <div className="flex justify-center gap-2 mt-6">
+          {Array.from({ length: maxIndex + 1 }).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={`w-2 h-2 rounded-full transition-colors ${
+                currentIndex === index ? "bg-[#0D6D6E]" : "bg-gray-300"
+              }`}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

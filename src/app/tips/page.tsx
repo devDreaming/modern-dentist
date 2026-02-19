@@ -1,4 +1,5 @@
 import SubPageHero from "@/components/SubPageHero";
+import FAQ from "@/components/FAQ";
 
 export default function Tips() {
   return (
@@ -7,6 +8,7 @@ export default function Tips() {
         title="Dental Health"
         subtitle="Achieve a brighter, healthier smile with expert tips and advice. Explore daily dental routines, diet tips, and solutions to common dental issues for you and your family."
       />
+      <FAQ />
     </div>
   );
 }
