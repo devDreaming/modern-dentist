@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import Select, { StylesConfig } from "react-select";
 import { addMonths, isWeekend } from "date-fns";
@@ -88,6 +88,15 @@ export default function AppointmentModal({ isOpen, onClose }: AppointmentModalPr
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (!isOpen) return;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   const handleChange = (
     e: { target: { name: string; value: string } }
   ) => {
@@ -118,7 +127,7 @@ export default function AppointmentModal({ isOpen, onClose }: AppointmentModalPr
       setSelectedTime(null);
       setSelectedService(null);
       onClose();
-    }, 2000);
+    }, 4000);
   };
 
   // Filter out weekends
@@ -160,9 +169,6 @@ export default function AppointmentModal({ isOpen, onClose }: AppointmentModalPr
           <h2 className="text-2xl font-bold text-[#0D6D6E] mb-2">
             Request an Appointment
           </h2>
-          <p className="text-sm text-gray-600 mb-6">
-            Fill out the form below and we&apos;ll contact you to confirm your appointment.
-          </p>
 
           {isSubmitted ? (
             <div className="text-center py-8">
@@ -176,6 +182,9 @@ export default function AppointmentModal({ isOpen, onClose }: AppointmentModalPr
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
+              <p className="text-sm text-gray-600 mb-6">
+                Fill out the form below and we&apos;ll contact you to confirm your appointment.
+              </p>
               <div>
                 <Label htmlFor="name" required>Full Name</Label>
                 <input

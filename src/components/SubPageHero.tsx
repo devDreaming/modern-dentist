@@ -8,7 +8,7 @@ interface SubPageHeroProps {
 export default function SubPageHero({ title, subtitle }: SubPageHeroProps) {
   return (
     <section className="relative">
-      <div className="relative aspect-21/9">
+      <div className="relative min-h-[450px]">
         <Image
           src="/dentist-chair.png"
           alt="Dental office"

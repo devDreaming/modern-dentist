@@ -10,22 +10,22 @@ const testimonials = [
   },
   {
     quote: "Best dental experience ever! Everything was explained clearly, and my concerns were addressed. I couldn't be happier with the results!",
-    name: "Michael Brown",
-    location: "Jakarta",
+    name: "Sherry Brown",
+    location: "Hamilton",
   },
   {
     quote: "A fantastic clinic! The process was smooth, pain-free, and very efficient. I'm excited for my next visit already!",
     name: "David Wilson",
-    location: "Jakarta",
+    location: "Lindan",
   },
   {
     quote: "The team here truly cares about their patients. Professional, gentle, and always on time. I wouldn't go anywhere else!",
     name: "Sarah Johnson",
-    location: "Jakarta",
+    location: "Hamilton",
   },
   {
     quote: "From the moment I walked in, I felt welcomed. The treatment was painless and the results exceeded my expectations!",
-    name: "Robert Chen",
+    name: "Robert Wood",
     location: "Jakarta",
   },
 ];
