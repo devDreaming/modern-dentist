@@ -24,6 +24,9 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: "Modern Dentist",
   description: "Modern dental care for the whole family",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
