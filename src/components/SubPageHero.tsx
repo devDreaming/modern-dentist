@@ -10,7 +10,7 @@ export default function SubPageHero({ title, subtitle }: SubPageHeroProps) {
     <section className="relative">
       <div className="relative min-h-[450px]">
         <Image
-          src="/dentist-chair.png"
+          src="/images/dentist-chair.png"
           alt="Dental office"
           fill
           className="object-cover"

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useAppointment } from "@/context/AppointmentContext";
 
 const cards = [
   {
@@ -39,6 +40,7 @@ const cards = [
 export default function WhyChooseUs() {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const { openModal } = useAppointment();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -66,28 +68,51 @@ export default function WhyChooseUs() {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {cards.map((card, index) => (
-            <Link
-              key={index}
-              href={card.href}
-              className={`bg-[#B8E8E8] rounded-2xl p-6 text-center shadow-lg transition-all duration-500 hover:shadow-xl hover:-translate-y-2 cursor-pointer block ${
-                isVisible
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-8"
-              }`}
-              style={{
-                transitionDelay: isVisible ? `${index * 150}ms` : "0ms",
-              }}
-            >
-              <div className="w-16 h-16 mx-auto mb-4 bg-[#0D6D6E] rounded-full flex items-center justify-center">
-                {card.icon}
-              </div>
-              <h3 className="text-xl font-bold text-[#0D6D6E] mb-2 whitespace-pre-line">
-                {card.title}
-              </h3>
-              <p className="text-sm text-gray-700">{card.description}</p>
-            </Link>
-          ))}
+          {cards.map((card, index) => {
+            const className = `bg-[#B8E8E8] rounded-2xl p-6 text-center shadow-lg transition-all duration-500 hover:shadow-xl hover:-translate-y-2 cursor-pointer block ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
+            }`;
+            const style = {
+              transitionDelay: isVisible ? `${index * 150}ms` : "0ms",
+            };
+            const content = (
+              <>
+                <div className="w-16 h-16 mx-auto mb-4 bg-[#0D6D6E] rounded-full flex items-center justify-center">
+                  {card.icon}
+                </div>
+                <h3 className="text-xl font-bold text-[#0D6D6E] mb-2 whitespace-pre-line">
+                  {card.title}
+                </h3>
+                <p className="text-sm text-gray-700">{card.description}</p>
+              </>
+            );
+
+            if (index === 1) {
+              return (
+                <button
+                  key={index}
+                  onClick={openModal}
+                  className={className}
+                  style={style}
+                >
+                  {content}
+                </button>
+              );
+            }
+
+            return (
+              <Link
+                key={index}
+                href={card.href}
+                className={className}
+                style={style}
+              >
+                {content}
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>
