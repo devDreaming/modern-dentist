@@ -35,9 +35,18 @@ function FlipCard({ member }: FlipCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
-    <div
-      className="group h-80 w-full cursor-pointer perspective-1000"
+    <button
+      type="button"
+      className="group h-80 w-full cursor-pointer perspective-1000 text-left
+        focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0D6D6E]/70 rounded-2xl"
       onClick={() => setIsFlipped(!isFlipped)}
+      onKeyDown={(e) => {
+        if (e.key === "Escape" && isFlipped) {
+          setIsFlipped(false);
+        }
+      }}
+      aria-expanded={isFlipped}
+      aria-label={`${member.name}, ${member.role}. ${isFlipped ? "Press to show photo" : "Press to learn more"}`}
     >
       <div
         className={`relative h-full w-full transition-transform duration-700 transform-style-3d ${
@@ -45,13 +54,13 @@ function FlipCard({ member }: FlipCardProps) {
         }`}
       >
         {/* Front of card */}
-        <div className="absolute inset-0 backface-hidden">
+        <div className="absolute inset-0 backface-hidden" aria-hidden={isFlipped}>
           <div className="h-full rounded-2xl bg-[#B8E8E8] p-6 flex flex-col items-center justify-center text-center">
             <div className="w-32 h-32 rounded-full bg-[#0D6D6E] mb-4 flex items-center justify-center overflow-hidden">
               {member.image ? (
                 <Image
                   src={member.image}
-                  alt={member.name}
+                  alt=""
                   width={128}
                   height={128}
                   className="w-full h-full object-cover"
@@ -62,6 +71,7 @@ function FlipCard({ member }: FlipCardProps) {
                   viewBox="0 0 24 24"
                   fill="currentColor"
                   className="w-20 h-20 text-white/80"
+                  aria-hidden="true"
                 >
                   <path
                     fillRule="evenodd"
@@ -78,7 +88,7 @@ function FlipCard({ member }: FlipCardProps) {
         </div>
 
         {/* Back of card */}
-        <div className="absolute inset-0 backface-hidden rotate-y-180">
+        <div className="absolute inset-0 backface-hidden rotate-y-180" aria-hidden={!isFlipped}>
           <div className="h-full rounded-2xl bg-[#0D6D6E] p-6 flex flex-col items-center justify-center text-center text-white">
             <h3 className="text-xl font-bold">{member.name}</h3>
             <p className="text-[#12FFE9] font-medium mb-4">{member.role}</p>
@@ -87,7 +97,7 @@ function FlipCard({ member }: FlipCardProps) {
           </div>
         </div>
       </div>
-    </div>
+    </button>
   );
 }
 
