@@ -1,21 +1,56 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import DatePicker from "react-datepicker";
+import { useState, useEffect, useRef } from "react";
+import {
+  DatePicker,
+  Calendar,
+  CalendarGrid,
+  CalendarGridHeader,
+  CalendarHeaderCell,
+  CalendarGridBody,
+  CalendarCell,
+  Heading,
+  Button,
+  Dialog,
+  Popover,
+  Group,
+  DateInput,
+  DateSegment,
+  Label as AriaLabel,
+} from "react-aria-components";
+import {
+  today,
+  getLocalTimeZone,
+  isWeekend,
+} from "@internationalized/date";
+import type { DateValue } from "@internationalized/date";
 import Select, { StylesConfig } from "react-select";
-import { addMonths, isWeekend } from "date-fns";
 
 interface AppointmentModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-interface ServiceOption {
+interface SelectOption {
   value: string;
   label: string;
 }
 
-const serviceOptions: ServiceOption[] = [
+const timeOptions: SelectOption[] = (() => {
+  const options: SelectOption[] = [];
+  for (let hour = 8; hour <= 18; hour++) {
+    for (const min of [0, 30]) {
+      if (hour === 18 && min === 30) break;
+      const period = hour >= 12 ? "PM" : "AM";
+      const displayHour = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
+      const label = `${displayHour}:${min.toString().padStart(2, "0")} ${period}`;
+      options.push({ value: `${hour}:${min.toString().padStart(2, "0")}`, label });
+    }
+  }
+  return options;
+})();
+
+const serviceOptions: SelectOption[] = [
   { value: "teeth-whitening", label: "Teeth Whitening" },
   { value: "routine-checkup", label: "Routine Checkup" },
   { value: "dental-implants", label: "Dental Implants" },
@@ -26,7 +61,7 @@ const serviceOptions: ServiceOption[] = [
 ];
 
 // Custom styles to match datepicker
-const selectStyles: StylesConfig<ServiceOption, false> = {
+const selectStyles: StylesConfig<SelectOption, false> = {
   control: (base, state) => ({
     ...base,
     borderRadius: "0.5rem",
@@ -66,7 +101,7 @@ const selectStyles: StylesConfig<ServiceOption, false> = {
   }),
 };
 
-function Label({ htmlFor, required, children }: { htmlFor: string; required?: boolean; children: string }) {
+function FormLabel({ htmlFor, required, children }: { htmlFor?: string; required?: boolean; children: string }) {
   return (
     <label htmlFor={htmlFor} className="block text-sm font-medium text-gray-700 mb-1">
       {children}
@@ -82,16 +117,19 @@ export default function AppointmentModal({ isOpen, onClose }: AppointmentModalPr
     phone: "",
     message: "",
   });
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [selectedTime, setSelectedTime] = useState<Date | null>(null);
-  const [selectedService, setSelectedService] = useState<ServiceOption | null>(null);
+  const [selectedDate, setSelectedDate] = useState<DateValue | null>(null);
+  const [selectedTime, setSelectedTime] = useState<SelectOption | null>(null);
+  const [selectedService, setSelectedService] = useState<SelectOption | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const nameInputRef = useRef<HTMLInputElement>(null);
 
   // Lock body scroll when modal is open
   useEffect(() => {
     if (!isOpen) return;
     document.body.style.overflow = "hidden";
+    // Focus the first input when the modal opens
+    setTimeout(() => nameInputRef.current?.focus(), 0);
     return () => {
       document.body.style.overflow = "";
     };
@@ -130,19 +168,12 @@ export default function AppointmentModal({ isOpen, onClose }: AppointmentModalPr
     }, 4000);
   };
 
-  // Filter out weekends
-  const isWeekday = (date: Date) => !isWeekend(date);
+  const isDateUnavailable = (date: DateValue) => isWeekend(date, "en-US");
 
   if (!isOpen) return null;
 
-  const minDate = new Date();
-  const maxDate = addMonths(new Date(), 12);
-
-  // Create clean time values with seconds/milliseconds set to 0
-  const minTime = new Date();
-  minTime.setHours(8, 0, 0, 0);  // 8:00 AM
-  const maxTime = new Date();
-  maxTime.setHours(18, 0, 0, 0); // 6:00 PM
+  const minDate = today(getLocalTimeZone());
+  const maxDate = minDate.add({ months: 12 });
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -186,9 +217,10 @@ export default function AppointmentModal({ isOpen, onClose }: AppointmentModalPr
                 Fill out the form below and we&apos;ll contact you to confirm your appointment.
               </p>
               <div>
-                <Label htmlFor="name" required>Full Name</Label>
+                <FormLabel htmlFor="name" required>Full Name</FormLabel>
                 <input
                   type="text"
+                  ref={nameInputRef}
                   id="name"
                   name="name"
                   required
@@ -201,7 +233,7 @@ export default function AppointmentModal({ isOpen, onClose }: AppointmentModalPr
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="email" required>Email</Label>
+                  <FormLabel htmlFor="email" required>Email</FormLabel>
                   <input
                     type="email"
                     id="email"
@@ -214,7 +246,7 @@ export default function AppointmentModal({ isOpen, onClose }: AppointmentModalPr
                   />
                 </div>
                 <div>
-                  <Label htmlFor="phone" required>Phone</Label>
+                  <FormLabel htmlFor="phone" required>Phone</FormLabel>
                   <input
                     type="tel"
                     id="phone"
@@ -229,45 +261,92 @@ export default function AppointmentModal({ isOpen, onClose }: AppointmentModalPr
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <DatePicker
+                  value={selectedDate}
+                  onChange={setSelectedDate}
+                  minValue={minDate}
+                  maxValue={maxDate}
+                  isDateUnavailable={isDateUnavailable}
+                  granularity="day"
+                >
+                  <AriaLabel className="block text-sm font-medium text-gray-700 mb-1">
+                    Preferred Date<span className="text-red-500 ml-1">*</span>
+                  </AriaLabel>
+                  <Group className="flex w-full px-4 py-2 border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-[#0D6D6E] focus-within:border-transparent bg-white">
+                    <DateInput className="flex flex-1 items-center">
+                      {(segment) => (
+                        <DateSegment
+                          segment={segment}
+                          className="px-0.5 rounded outline-none focus:bg-[#0D6D6E] focus:text-white data-placeholder:text-gray-400"
+                        />
+                      )}
+                    </DateInput>
+                    <Button className="ml-2 text-gray-500 hover:text-[#0D6D6E] outline-none focus:text-[#0D6D6E]">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v9.75" />
+                      </svg>
+                    </Button>
+                  </Group>
+                  <Popover className="z-60">
+                    <Dialog className="p-4 bg-white rounded-xl shadow-2xl border border-gray-200 outline-none">
+                      <Calendar>
+                        <header className="flex items-center justify-between mb-2">
+                          <Button slot="previous" className="p-1 rounded hover:bg-gray-100 outline-none focus:ring-2 focus:ring-[#0D6D6E]">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 text-[#0D6D6E]">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                            </svg>
+                          </Button>
+                          <Heading className="text-sm font-semibold text-[#0D6D6E]" />
+                          <Button slot="next" className="p-1 rounded hover:bg-gray-100 outline-none focus:ring-2 focus:ring-[#0D6D6E]">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 text-[#0D6D6E]">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                            </svg>
+                          </Button>
+                        </header>
+                        <CalendarGrid>
+                          <CalendarGridHeader>
+                            {(day) => (
+                              <CalendarHeaderCell className="text-xs font-medium text-gray-500 pb-2 w-9">
+                                {day}
+                              </CalendarHeaderCell>
+                            )}
+                          </CalendarGridHeader>
+                          <CalendarGridBody>
+                            {(date) => (
+                              <CalendarCell
+                                date={date}
+                                className="w-9 h-9 flex items-center justify-center rounded-full text-sm outline-none cursor-pointer
+                                  hover:bg-[#B8E8E8]
+                                  data-selected:bg-[#0D6D6E] data-selected:text-white
+                                  data-disabled:text-gray-300 data-disabled:cursor-default data-disabled:hover:bg-transparent
+                                  data-unavailable:text-gray-300 data-unavailable:cursor-default data-unavailable:hover:bg-transparent data-unavailable:line-through
+                                  data-focused:ring-2 data-focused:ring-[#0D6D6E]
+                                  data-outside-month:hidden"
+                              />
+                            )}
+                          </CalendarGridBody>
+                        </CalendarGrid>
+                      </Calendar>
+                    </Dialog>
+                  </Popover>
+                </DatePicker>
+
                 <div>
-                  <Label htmlFor="date" required>Preferred Date</Label>
-                  <DatePicker
-                    id="date"
-                    selected={selectedDate}
-                    onChange={(date: Date | null) => setSelectedDate(date)}
-                    filterDate={isWeekday}
-                    minDate={minDate}
-                    maxDate={maxDate}
-                    placeholderText="Select a date"
-                    wrapperClassName="w-full"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D6D6E] focus:border-transparent outline-none"
-                    dateFormat="MMMM d, yyyy"
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="time" required>Preferred Time</Label>
-                  <DatePicker
-                    id="time"
-                    selected={selectedTime}
-                    onChange={(time: Date | null) => setSelectedTime(time)}
-                    showTimeSelect
-                    showTimeSelectOnly
-                    timeIntervals={30}
-                    minTime={minTime}
-                    maxTime={maxTime}
-                    placeholderText="Select a time"
-                    wrapperClassName="w-full"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D6D6E] focus:border-transparent outline-none"
-                    timeFormat="h:mm aa"
-                    dateFormat="h:mm aa"
-                    required
+                  <FormLabel htmlFor="time" required>Preferred Time</FormLabel>
+                  <Select
+                    inputId="time"
+                    options={timeOptions}
+                    value={selectedTime}
+                    onChange={(option) => setSelectedTime(option)}
+                    placeholder="Select a time"
+                    styles={selectStyles}
+                    isSearchable
                   />
                 </div>
               </div>
 
               <div>
-                <Label htmlFor="service" required>Service</Label>
+                <FormLabel htmlFor="service" required>Service</FormLabel>
                 <Select
                   inputId="service"
                   options={serviceOptions}
@@ -280,7 +359,7 @@ export default function AppointmentModal({ isOpen, onClose }: AppointmentModalPr
               </div>
 
               <div>
-                <Label htmlFor="message">Additional Notes</Label>
+                <FormLabel htmlFor="message">Additional Notes</FormLabel>
                 <textarea
                   id="message"
                   name="message"

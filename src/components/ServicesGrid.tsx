@@ -53,7 +53,9 @@ export default function ServicesGrid() {
             <Link
               key={index}
               href="/services"
-              className="bg-[#0D6D6E] rounded-2xl p-6 border border-[#0D6D6E]/20 shadow-lg hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer block text-white"
+              className="bg-[#0D6D6E] rounded-2xl p-6 border border-[#0D6D6E]/20 shadow-lg hover:shadow-xl hover:-translate-y-2 
+                        focus-visible:shadow-xl focus-visible:-translate-y-2 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-black/70 
+                        transition-all duration-300 cursor-pointer block text-white"
             >
               <h3 className="text-xl font-bold text-center mb-3 whitespace-pre-line">
                 {service.title}

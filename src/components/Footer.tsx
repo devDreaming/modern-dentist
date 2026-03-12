@@ -41,7 +41,7 @@ export default function Footer() {
           </div>
           <div>
             <h3 className="text-xl font-bold mb-2">📞 Call Us:</h3>
-            <p className="text-sm">+1 (800) 555-5555</p>
+            <a href="tel:+18005555555" className="text-sm hover:underline">+1 (800) 555-5555</a>
           </div>
           <div>
             <h3 className="text-xl font-bold mb-2">Social Media</h3>
