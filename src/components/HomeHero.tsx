@@ -5,7 +5,7 @@ export default function HomeHero() {
   return (
     <section className="relative -mt-12 h-[calc(100vh)]">
       <Image
-        src="/hero-img.png"
+        src="/hero-img.webp"
         alt="Modern dental care"
         fill
         className="object-cover"
@@ -13,6 +13,7 @@ export default function HomeHero() {
       />
       <div
         className="absolute inset-0"
+        aria-hidden="true"
         style={{
           background: "linear-gradient(to right, #12FFE9, rgba(93, 128, 115, 0))",
         }}

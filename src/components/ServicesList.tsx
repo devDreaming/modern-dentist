@@ -90,6 +90,7 @@ export default function ServicesList() {
                         viewBox="0 0 24 24"
                         fill="currentColor"
                         className="w-5 h-5 text-[#0D6D6E] shrink-0 mt-0.5"
+                        aria-hidden="true"
                       >
                         <path
                           fillRule="evenodd"

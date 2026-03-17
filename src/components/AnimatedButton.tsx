@@ -45,6 +45,7 @@ export default function AnimatedButton({ href, onClick, bookAppointment, variant
         strokeWidth={1.5}
         stroke="currentColor"
         className={iconClass}
+        aria-hidden="true"
       >
         <path
           strokeLinecap="round"

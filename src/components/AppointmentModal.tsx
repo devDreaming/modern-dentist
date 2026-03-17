@@ -184,7 +184,7 @@ export default function AppointmentModal({ isOpen, onClose }: AppointmentModalPr
       />
 
       {/* Modal */}
-      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
+      <div role="dialog" aria-modal="true" aria-labelledby="appointment-modal-title" className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
         {/* Close button */}
         <button
           onClick={onClose}
@@ -198,7 +198,7 @@ export default function AppointmentModal({ isOpen, onClose }: AppointmentModalPr
 
         {/* Content */}
         <div className="p-6">
-          <h2 className="text-2xl font-bold text-[#0D6D6E] mb-2">
+          <h2 id="appointment-modal-title" className="text-2xl font-bold text-[#0D6D6E] mb-2">
             Request an Appointment
           </h2>
 
@@ -282,7 +282,7 @@ export default function AppointmentModal({ isOpen, onClose }: AppointmentModalPr
                         />
                       )}
                     </DateInput>
-                    <Button className="ml-2 text-gray-500 hover:text-[#0D6D6E] outline-none focus:text-[#0D6D6E]">
+                    <Button aria-label="Open calendar date picker" className="ml-2 text-gray-500 hover:text-[#0D6D6E] outline-none focus:text-[#0D6D6E]">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v9.75" />
                       </svg>
@@ -292,13 +292,13 @@ export default function AppointmentModal({ isOpen, onClose }: AppointmentModalPr
                     <Dialog className="p-4 bg-white rounded-xl shadow-2xl border border-gray-200 outline-none">
                       <Calendar>
                         <header className="flex items-center justify-between mb-2">
-                          <Button slot="previous" className="p-1 rounded hover:bg-gray-100 outline-none focus:ring-2 focus:ring-[#0D6D6E]">
+                          <Button slot="previous" aria-label="Previous month" className="p-1 rounded hover:bg-gray-100 outline-none focus:ring-2 focus:ring-[#0D6D6E]">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 text-[#0D6D6E]">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                             </svg>
                           </Button>
                           <Heading className="text-sm font-semibold text-[#0D6D6E]" />
-                          <Button slot="next" className="p-1 rounded hover:bg-gray-100 outline-none focus:ring-2 focus:ring-[#0D6D6E]">
+                          <Button slot="next" aria-label="Next month" className="p-1 rounded hover:bg-gray-100 outline-none focus:ring-2 focus:ring-[#0D6D6E]">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 text-[#0D6D6E]">
                               <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                             </svg>
@@ -376,7 +376,7 @@ export default function AppointmentModal({ isOpen, onClose }: AppointmentModalPr
                 type="submit"
                 disabled={isSubmitting || !selectedDate || !selectedTime || !selectedService}
                 className="w-full bg-[#0D6D6E] text-white font-medium py-3 px-6 rounded-lg hover:bg-[#0a5a5b] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                aria-label="submit"
+                aria-label="Request appointment"
               >
                 {isSubmitting ? "Submitting..." : "Request Appointment"}
               </button>

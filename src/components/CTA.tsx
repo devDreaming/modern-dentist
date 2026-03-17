@@ -5,9 +5,10 @@ export default function CTA() {
     <section className="relative py-24">
       <div
         className="absolute inset-0 bg-cover bg-center"
+        aria-hidden="true"
         style={{ backgroundImage: "url('/hero-img.png')" }}
       />
-      <div className="absolute inset-0 bg-[#12FFE9]/80" />
+      <div className="absolute inset-0 bg-[#12FFE9]/80" aria-hidden="true" />
 
       <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
         <h2 className="text-3xl md:text-5xl font-bold text-black italic leading-tight mb-6">

@@ -57,6 +57,8 @@ export default function FAQ() {
               <button
                 onClick={() => toggleFAQ(index)}
                 className="w-full flex items-center justify-between py-4 text-left cursor-pointer"
+                aria-expanded={openIndex === index}
+                aria-controls={`faq-answer-${index}`}
               >
                 <span className="font-bold text-black">
                   {index + 1}. {faq.question}
@@ -70,11 +72,13 @@ export default function FAQ() {
                   className={`w-5 h-5 text-gray-500 transition-transform duration-300 ${
                     openIndex === index ? "rotate-180" : ""
                   }`}
+                  aria-hidden="true"
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                 </svg>
               </button>
               <div
+                id={`faq-answer-${index}`}
                 className={`overflow-hidden transition-all duration-300 ${
                   openIndex === index ? "max-h-96 pb-4" : "max-h-0"
                 }`}
