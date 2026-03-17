@@ -189,6 +189,7 @@ export default function AppointmentModal({ isOpen, onClose }: AppointmentModalPr
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 z-10"
+          aria-label="Close form"
         >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -375,6 +376,7 @@ export default function AppointmentModal({ isOpen, onClose }: AppointmentModalPr
                 type="submit"
                 disabled={isSubmitting || !selectedDate || !selectedTime || !selectedService}
                 className="w-full bg-[#0D6D6E] text-white font-medium py-3 px-6 rounded-lg hover:bg-[#0a5a5b] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="submit"
               >
                 {isSubmitting ? "Submitting..." : "Request Appointment"}
               </button>
