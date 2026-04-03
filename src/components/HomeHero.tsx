@@ -8,6 +8,7 @@ export default function HomeHero() {
         src="/hero-img.webp"
         alt="Modern dental care"
         fill
+        sizes="100vw"
         className="object-cover"
         priority
       />

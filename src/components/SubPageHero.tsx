@@ -13,6 +13,7 @@ export default function SubPageHero({ title, subtitle }: SubPageHeroProps) {
           src="/images/dentist-chair.png"
           alt="Dental office"
           fill
+          sizes="100vw"
           className="object-cover"
           priority
         />
